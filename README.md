@@ -1,2 +1,2 @@
-MCPemula : https://www.kaggle.com/datasets/datascientistanna/customers-dataset/data
-dataSetMLPemula : https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset
+- MCPemula : https://www.kaggle.com/datasets/datascientistanna/customers-dataset/data
+- dataSetMLPemula : https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset
