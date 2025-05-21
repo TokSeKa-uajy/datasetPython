@@ -59,33 +59,59 @@ Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dil
 - Family Size: Jumlah anggota keluarga pelanggan.
 
 ### Beberapa Contoh untuk Analisis Distribusi dan Korelasi
-[https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/gender.png]
-[https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/profesi.png]
-[https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/umur.png]
+![alt text](https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/gender.png)
+![alt text](https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/profesi.png)
+![alt text](https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/umur.png)
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+Tahapan ini menjelaskan proses pembangunan model machine learning untuk menyelesaikan permasalahan segmentasi pelanggan berdasarkan dataset Shop Customer Data.
+### Algoritma yang Digunakan
+Dalam proyek ini, algoritma utama yang digunakan adalah K-Means Clustering, dengan proses tambahan evaluasi dan optimasi melalui:
+- Principal Component Analysis (PCA) untuk reduksi dimensi
+- Silhouette Score sebagai metrik evaluasi kualitas cluster
+### Tahapan Pemodelan
+1. Pra-pemrosesan Data
+- Normalisasi fitur numerik menggunakan MinMaxScaler.
+- One-hot encoding terhadap variabel kategorikal Gender dan Profession.
+- Penghapusan fitur CustomerID, Age, dan Profession karena dinilai tidak valid atau tidak relevan.
+2. Penentuan Jumlah Klaster (k)
+- Menggunakan metode Elbow dengan bantuan KElbowVisualizer untuk menentukan nilai optimal k.
+- Nilai awal optimal yang diperoleh adalah k = 4.
+3. Pelatihan Model KMeans
+- Model pertama dilatih pada seluruh fitur terpilih dengan k = 4.
+- Hasil clustering awal menunjukkan nilai Silhouette Score sebesar 0.19, yang mengindikasikan segmentasi masih kurang optimal.
+4. Improvement: Feature Selection & PCA
+Fitur dengan variansi sangat rendah dihapus menggunakan VarianceThreshold.
+PCA diterapkan untuk mereduksi dimensi menjadi 2 komponen utama.
+Model KMeans dilatih ulang pada data PCA dengan berbagai nilai k (2–9).
+Ditemukan nilai optimal baru k = 4 dengan Silhouette Score meningkat drastis menjadi 0.9125
+### Kelebihan dan Kekurangan KMeans
+Kelebihan:
+- Cepat dan efisien dalam membagi data ke dalam klaster.
+- Mudah diinterpretasi ketika data memiliki bentuk yang jelas (bulat dan seimbang).
+- Dapat digunakan dalam kombinasi dengan PCA untuk peningkatan performa.
+Kekurangan:
+- Sensitif terhadap skala dan outlier.
+- Perlu menentukan jumlah klaster di awal.
+- Tidak optimal jika bentuk cluster bukan sferis atau distribusi data tidak seimbang.
 
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
+Pada proyek ini, karena kasusnya adalah clustering (unsupervised learning), maka metrik evaluasi yang digunakan adalah Silhouette Score.
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+Silhouette Score mengukur seberapa mirip sebuah data dengan cluster-nya sendiri dibandingkan dengan cluster lain. Nilai skor berada dalam rentang -1 hingga 1:
+- Skor mendekati 1 menunjukkan bahwa data sangat cocok dengan cluster-nya dan sangat berbeda dengan cluster lain.
+- Skor mendekati 0 menunjukkan bahwa data berada di antara dua cluster.
+- Skor negatif (< 0) menunjukkan bahwa data mungkin salah ditempatkan.
+Rumus Silhouette Score:
+![alt text](https://github.com/TokSeKa-uajy/datasetPython/blob/main/MCAkhir/rumus.png).
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
-
-**---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
-
+di mana:
+- a(i) adalah jarak rata-rata antara titik i dan semua titik lain dalam cluster yang sama.
+- b(i) adalah jarak rata-rata dari titik i ke titik-titik di cluster terdekat lainnya.
+#### Hasil Evaluasi
+- Model awal (KMeans tanpa seleksi fitur dan PCA) menghasilkan Silhouette Score sebesar 0.24. Ini menandakan bahwa hasil klasterisasi awal belum optimal.
+- Setelah dilakukan Feature Selection dan PCA (reduksi dimensi ke 2D), Silhouette Score meningkat menjadi 0.673.
+- Tahap akhir dilakukan tuning jumlah cluster k dari 2 sampai 9, dan ditemukan bahwa nilai optimal adalah k=4, dengan Silhouette Score tertinggi sebesar 0.9125.
+- Visualisasi hasil clustering menunjukkan pemisahan klaster yang jelas dan logis berdasarkan profil pelanggan.
+#### Kesimpulan
+Penerapan metrik Silhouette Score memungkinkan evaluasi objektif terhadap kualitas segmentasi yang dilakukan. Peningkatan skor dari 0.24 ke 0.9125 menunjukkan bahwa pendekatan kombinasi KMeans + PCA berhasil memperbaiki pemisahan klaster secara signifikan. Hal ini menunjukkan bahwa fitur dan struktur cluster yang digunakan sudah cukup representatif untuk mengelompokkan pelanggan berdasarkan perilaku belanja dan demografi mereka.
