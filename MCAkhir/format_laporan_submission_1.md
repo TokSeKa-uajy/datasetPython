@@ -25,8 +25,8 @@ Bagian laporan ini mencakup:
 - Jawaban Masalah 2: Menentukan segmen pelanggan bernilai tinggi yang berpotensi memberikan kontribusi besar terhadap profit toko.
 
 ### Solution statements
-- Solusi 1: Menggunakan algoritma unsupervised learning seperti K-Means Clustering untuk membagi pelanggan ke dalam beberapa kelompok berdasarkan variabel seperti Annual Income, Spending Score, dan Age.
-- Solusi 2: Melakukan evaluasi performa model clustering menggunakan metrik seperti Silhouette Score dan Davies-Bouldin Index untuk memilih model yang memberikan segmentasi paling optimal.
+- Solusi 1: Menggunakan pendekatan supervised learning berupa klasifikasi untuk memprediksi kelompok segmentasi pelanggan berdasarkan fitur-fitur seperti Annual Income, Spending Score, Family Size, Gender, dan Work Experience. Label target dapat diperoleh dari hasil clustering sebelumnya (misalnya hasil KMeans), sehingga klasifikasi bertujuan meniru pola segmentasi tersebut pada data baru.
+- Solusi 2: Melatih model klasifikasi seperti K-Nearest Neighbors lalu melakukan evaluasi performa menggunakan metrik seperti accuracy, precision, recall, dan F1-score untuk menilai seberapa baik model memetakan data pelanggan ke segmen yang sesuai.
 
 ## Data Understanding
 Dataset yang digunakan dalam proyek ini berjudul Shop Customer Data, yang tersedia secara publik di platform Kaggle melalui tautan berikut: [Kaggle](https://www.kaggle.com/datasets/datascientistanna/customers-dataset).
